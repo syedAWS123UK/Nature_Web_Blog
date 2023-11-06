@@ -1,14 +1,16 @@
-FROM python:3.9- alpine
+FROM python:3.9-slim
 
-WORKDIR /data
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libjpeg-dev \
+    zlib1g-dev \
+    libtiff-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN pip install django==3.2
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-COPY . .
-
-RUN python manage.py migrate
-
-EXPOSE 8000
-
-CMD ["python","manage.py","runserver","0.0.0.0:8000"]
-
+RUN mkdir /code
+WORKDIR /code
+COPY requirements.txt /code/
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . /code/
