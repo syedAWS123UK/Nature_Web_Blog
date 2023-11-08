@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+ENV port 8000
+EXPOSE 8000
 RUN mkdir /code
 WORKDIR /code
 COPY requirements.txt /code/
